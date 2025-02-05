@@ -1,3 +1,5 @@
-from models.chatbot import a
+import uvicorn
 
-print(a)
+if __name__ == "__main__":
+    # Run the FastAPI app using Uvicorn.
+    uvicorn.run("api.fastapi_endpoints:app", host="0.0.0.0", port=8000, reload=True)
