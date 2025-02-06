@@ -31,5 +31,4 @@ if __name__ == "__main__":
     # Example call to GET endpoint
     get_chatbot_by_id(1)
     
-    # Example call to POST endpoint
-    insert_message(1, "Hello from the client!", "user")
+    

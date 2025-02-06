@@ -24,11 +24,10 @@ class GetChatbotByID(Query):
         return (query, params)
     
     def transform_response(self, rows: List[Dict[str, Any]]) -> dict:
-        """
-        Transforms flat rows into the nested JSON structure.
-        """
+        print(rows)
         if not rows:
             return {}
+        
         chatbot = {
             "id": rows[0]["chatbot_id"],
             "name": rows[0]["chatbot_name"],
@@ -49,6 +48,7 @@ class GetChatbotByID(Query):
                         "content": row["characteristic_content"],
                         "created_at": row["characteristic_created_at"]
                     }
+
             # Process chat sessions and nested messages
             if row.get("session_id"):
                 session_id = row["session_id"]
@@ -59,14 +59,20 @@ class GetChatbotByID(Query):
                         "guest_id": row["guest_id"],
                         "messages": []
                     }
+
+                # Process message, avoid duplicates based on message_id
                 if row.get("message_id"):
-                    sessions_dict[session_id]["messages"].append({
-                        "id": row["message_id"],
-                        "content": row["message_content"],
-                        "sender": row["sender"],
-                        "created_at": row["message_created_at"]
-                    })
+                    message_id = row["message_id"]
+                    # Only append message if it is not already added
+                    if not any(message["id"] == message_id for message in sessions_dict[session_id]["messages"]):
+                        sessions_dict[session_id]["messages"].append({
+                            "id": message_id,
+                            "content": row["message_content"],
+                            "sender": row["sender"],
+                            "created_at": row["message_created_at"]
+                        })
 
         chatbot["chatbot_characteristics"] = list(characteristics_dict.values())
         chatbot["chat_sessions"] = list(sessions_dict.values())
-        return {"chatbots": chatbot}
+        
+        return chatbot
