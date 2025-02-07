@@ -24,7 +24,6 @@ class GetChatbotByID(Query):
         return (query, params)
     
     def transform_response(self, rows: List[Dict[str, Any]]) -> dict:
-        print(rows)
         if not rows:
             return {}
         
