@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from db.db_connection import DBConnection
-from sql.queries.get_chatbot_by_id import GetChatbotByID
-from sql.mutations.insert_message import InsertMessageByChatSessionID
+from sql.queries import GetChatbotByID
+from sql.mutations import InsertMessageByChatSessionID, InsertGuest, InsertChatSession
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -58,3 +58,45 @@ def insert_message(request: InsertMessageRequest):
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+
+class InsertGuestRequest(BaseModel):
+    name: str
+    email: str
+
+
+@app.post("/guest")
+def insert_guest_api(request: InsertGuestRequest):
+    """
+    Insert a new guest and return the number of affected rows.
+    """
+    connection = DBConnection.get_connection()
+    cursor = DBConnection.get_cursor()
+    mutation_obj = InsertGuest(cursor, connection)
+    input_params = request.model_dump()
+    try:
+        result = mutation_obj.run(input_params)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+class InsertChatSessionRequest(BaseModel):
+    chatbot_id: int
+    guest_id: int
+
+
+@app.post("/chat_sessions")
+def insert_chat_session_api(request: InsertChatSessionRequest):
+    """
+    Insert a new chat session and return the number of affected rows.
+    """
+    connection = DBConnection.get_connection()
+    cursor = DBConnection.get_cursor()
+    mutation_obj = InsertChatSession(cursor, connection)
+    input_params = request.model_dump()
+    try:
+        result = mutation_obj.run(input_params)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500,detail=str(e))

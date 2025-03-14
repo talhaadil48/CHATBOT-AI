@@ -27,8 +27,32 @@ def insert_message(chat_session_id: int, content: str, sender: str):
     else:
         print("Failed to insert message:", response.text)
 
+def insert_guest(name: str, email: str):
+    url = f"{BASE_URL}/guest"
+    payload = {
+        "name": name,
+        "email": email
+    }
+    response = requests.post(url, json=payload)
+    if response.status_code == 200:
+        print("Guest inserted successfully:")
+        print(json.dumps(response.json(), indent=2))
+    else:
+        print("Failed to insert guest:", response.text)
+
+def insert_chat_sessions(chatbot_id: int, guest_id: int):
+    url = f"{BASE_URL}/chat_sessions"
+    payload = {
+        "chatbot_id": chatbot_id,
+        "guest_id": guest_id
+    }
+    response = requests.post(url, json=payload)
+    if response.status_code == 200:
+        print("chat session inserted successfully:")
+        print(json.dumps(response.json(), indent=2))
+    else:
+        print("Failed to insert chat session:",response.text)
 if __name__ == "__main__":
     # Example call to GET endpoint
-    get_chatbot_by_id(1)
-    
+   insert_chat_sessions(1,1)
     

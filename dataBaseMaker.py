@@ -3,7 +3,7 @@ import pymysql
 # Database connection details
 DB_HOST = "localhost"       # Change if necessary
 DB_USER = "root"   # Replace with your MySQL username
-DB_PASSWORD = "X9v@Pq#L3m"  # Replace with your MySQL password
+DB_PASSWORD = "12345678"  # Replace with your MySQL password
 DB_NAME = "chatbotproject"  # Name of your database
 
 # Path to your SQL file
