@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from db.db_connection import DBConnection
-from sql.queries import GetChatbotByID
+from sql.queries import GetChatbotByID, GetChatbotByUser, GetGuestByID
 from sql.mutations import InsertMessageByChatSessionID, InsertGuest, InsertChatSession
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -37,6 +37,44 @@ def get_chatbot_by_id(chatbot_id: int):
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/guests/{guest_id}")
+def get_guest_by_id(guest_id: int):
+    """
+    Retrieve full guest information by ID and return nested JSON.
+    """
+    connection = DBConnection.get_connection()
+    cursor = DBConnection.get_cursor()
+    query_obj = GetGuestByID(cursor, connection)
+    try:
+        input_params = {"guest_id": guest_id}
+        result = query_obj.run(input_params)
+        if not result:
+            raise HTTPException(status_code=404, detail="guest not found")
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500,detail=str(e))
+
+
+
+@app.get("/chatbotbyuser/{clerk_user_id}")
+def get_chatbot_by_user(clerk_user_id: str):
+    """
+    Retrieve full chatbot information by ID and return nested JSON.
+    """
+    connection = DBConnection.get_connection()
+    cursor = DBConnection.get_cursor()
+    query_obj = GetChatbotByUser(cursor, connection)
+    try:
+        input_params = {"clerk_user_id": clerk_user_id}
+        result = query_obj.run(input_params)
+        if not result:
+            raise HTTPException(status_code=404, detail="Chatbot not found")
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500,detail=str(e))
+
 
 # Request model for inserting a message
 class InsertMessageRequest(BaseModel):
