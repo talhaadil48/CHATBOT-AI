@@ -75,6 +75,6 @@ def insert_chat_sessions(chatbot_id: int, guest_id: int):
 
 if __name__ == "__main__":
     # Example call to GET endpoint
-    get_chatbot_by_user('clerk_user_1')
-    get_guest_by_id(1)
-    get_chatbot_by_id(1)
+    insert_message(1, "Hello", "ai")
+    insert_guest("John Doe", "johndoe@gmail.com")
+    insert_chat_sessions(1, 1)
