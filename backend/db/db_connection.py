@@ -1,6 +1,6 @@
 import pymysql
 from pymysql.cursors import DictCursor
-from config.settings import DATABASE_CONFIG
+from config import DATABASE_CONFIG
 
 class DBConnection:
     """

@@ -1,5 +1,5 @@
 from typing import Dict, Tuple,List,Any
-from sql.execution import Query
+from sql import Query
 
 class GetChatbotByUser(Query):
     """

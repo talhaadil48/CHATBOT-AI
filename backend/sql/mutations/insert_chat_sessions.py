@@ -1,5 +1,5 @@
 from typing import Dict, Tuple
-from sql.execution import Mutation
+from sql import Mutation
 
 class InsertChatSession(Mutation):
     """

@@ -1,5 +1,5 @@
 from typing import Dict, Tuple,Any
-from sql.execution import Mutation
+from sql import Mutation
 
 class InsertGuest(Mutation):
     """
