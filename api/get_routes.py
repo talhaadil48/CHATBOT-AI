@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from db import DBConnection
-from sql.queries import GetChatbotByID, GetChatbotByUser, GetGuestByID
+from sql.queries import GetChatbotByID, GetChatbotByUser, GetGuestByID,GetChatSessionByID
 from .base import BaseRouter
 
 class GetRoutes(BaseRouter):
@@ -10,6 +10,7 @@ class GetRoutes(BaseRouter):
         self.router.add_api_route("/chatbots/{chatbot_id}", self.get_chatbot_by_id, methods=["GET"])
         self.router.add_api_route("/guests/{guest_id}", self.get_guest_by_id, methods=["GET"])
         self.router.add_api_route("/chatbotbyuser/{clerk_user_id}", self.get_chatbot_by_user, methods=["GET"])
+        self.router.add_api_route("/chatsessionmessages/{chat_session_id}", self.get_chat_session_messages, methods=["GET"])
 
     def get_chatbot_by_id(self, chatbot_id: int):
         connection = DBConnection.get_connection()
@@ -46,6 +47,20 @@ class GetRoutes(BaseRouter):
             result = query_obj.run(input_params)
             if not result:
                 raise HTTPException(status_code=404, detail="Chatbot not found")
+            return result
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+        
+        
+    def get_chat_session_messages(self, chat_session_id: int):
+        connection = DBConnection.get_connection()
+        cursor = DBConnection.get_cursor()
+        query_obj = GetChatSessionByID(cursor, connection)
+        try:
+            input_params = {"chat_session_id": chat_session_id}
+            result = query_obj.run(input_params)
+            if not result:
+                raise HTTPException(status_code=404, detail="Chat session messages not found")
             return result
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
