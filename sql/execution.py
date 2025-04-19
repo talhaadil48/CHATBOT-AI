@@ -40,7 +40,10 @@ class Mutation(BaseSQL):
     """
     def run(self, input_params: Dict[str, Any]) -> Dict[str, Any]:
         statement, params = self.get_statement(input_params)
-        self.cursor.execute(statement, params)
+        self.cursor.execute(statement, params)    
         self.connection.commit()
         affected = self.cursor.rowcount
-        return {"affected_rows": affected}
+        last_inserted_id = self.cursor.lastrowid
+
+        return {"affected_rows": affected,
+                "id":last_inserted_id}

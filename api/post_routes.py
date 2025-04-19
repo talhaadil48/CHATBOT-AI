@@ -95,9 +95,9 @@ class PostRoutes(BaseRouter):
             raise HTTPException(status_code=500, detail=str(e))
         
     class CreateChatbotRequest(BaseModel):
-        user_id: str
+        clerk_user_id: str
         name: str
-    def create_chatbot(self,request: CreateChatbotRequest):
+    def create_chatbot(self, request: CreateChatbotRequest):
         """
         Create a new chatbot and return success confirmation.
         """
@@ -107,11 +107,11 @@ class PostRoutes(BaseRouter):
         input_params = request.model_dump()
         
         try:
-            result = mutation_obj.run(input_params)  # Assuming 'run()' executes the query
-            return {"message": "Chatbot created successfully", "rows_affected": result}
+            result = mutation_obj.run(input_params)  
+            return result
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
-        
+
     class DeleteChatbotRequest(BaseModel):
         chatbot_id: int
 
