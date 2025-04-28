@@ -178,3 +178,4 @@ cython_debug/
 # QODO
 .qodo
 test.py
+.vercel
