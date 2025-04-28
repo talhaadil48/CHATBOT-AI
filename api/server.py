@@ -6,7 +6,12 @@ from .post_routes import PostRoutes
 app = FastAPI(title="Custom Backend Server")
 
 # CORS Configuration
-origins = ["http://localhost:5173", "http://localhost:3000"]
+origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://oraclia.vercel.app"  # Added your deployed frontend URL
+]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -18,4 +23,3 @@ app.add_middleware(
 # Registering routes
 app.include_router(GetRoutes().get_router())
 app.include_router(PostRoutes().get_router())
-
