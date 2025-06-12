@@ -7,10 +7,13 @@ host = os.getenv('HOST')
 database = os.getenv('DATABASE')
 user = os.getenv('USER')
 password = os.getenv('PASSWORD')
-
+port = os.getenv('PORT')
+ca = os.getenv('CA')
 DATABASE_CONFIG = {
     "host" : host,
     "database": database,
     "user": user,
-    "password": password
+    "password": password,
+    "port" : int(port),
+    "ca" : ca
 }

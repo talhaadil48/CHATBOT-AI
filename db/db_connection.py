@@ -12,11 +12,14 @@ class DBConnection:
     def get_connection(cls):
         if cls._connection is None or not cls._connection.open:
             try:
+                print(DATABASE_CONFIG)
                 cls._connection = pymysql.connect(
                     host=DATABASE_CONFIG["host"],
                     database=DATABASE_CONFIG["database"],
                     user=DATABASE_CONFIG["user"],
                     password=DATABASE_CONFIG["password"],
+                    port=DATABASE_CONFIG["port"],
+                    ssl_ca=DATABASE_CONFIG["ca"],
                     cursorclass=DictCursor
             )
                 print("Database connected.")
